@@ -81,11 +81,11 @@ function BookAppointment({ doctor }) {
             <DialogTrigger asChild>
                 <Button className="mt-3 rounded-full">Reserver un rendez-vous</Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="p-4 max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
                     <DialogTitle>Prendre un rendez-vous</DialogTitle>
                     <DialogDescription>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-5">
                             <div className="flex flex-col gap-3 items-baseline">
                                 <h2 className="flex gap-2 items-center">
                                     <CalendarDays className="text-primary h-5 w-5" />
@@ -99,12 +99,12 @@ function BookAppointment({ doctor }) {
                                     disabled={isPastDay}
                                 />
                             </div>
-                            <div className="flex flex-col gap-3 md:mt-0">
+                            <div className="flex flex-col gap-3 lg:mt-0">
                                 <h2 className="flex gap-2 items-center">
                                     <Clock className="text-primary h-5 w-5" />
                                     Choisissez l'heure de votre réservation
                                 </h2>
-                                <div className="grid grid-cols-2 gap-2 border rounded-lg p-3">
+                                <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-2 gap-2 border rounded-lg p-3">
                                     {timeSlot &&
                                         timeSlot.map((item, index) => (
                                             <span
@@ -122,7 +122,7 @@ function BookAppointment({ doctor }) {
                         </div>
                     </DialogDescription>
                 </DialogHeader>
-                <DialogFooter className="sm:justify-end">
+                <DialogFooter className="sm:justify-end mt-5">
                     <DialogClose asChild>
                         <Button className="text-red-500 border-red-50" type="button" variant="outline">
                             Fermer

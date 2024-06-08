@@ -1,11 +1,20 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+import { useUser, SignInButton } from '@clerk/nextjs' // Utilisation du composant SignInButton de Clerk
 
-function DoctorList({ doctorList,heading }) {
+function DoctorList({ doctorList, heading }) {
+  const { isSignedIn } = useUser(); // Utilisation de useUser pour vérifier l'authentification
+
+  const handleReserveClick = (e) => {
+    if (!isSignedIn) {
+      e.preventDefault(); // Empêche la navigation si l'utilisateur n'est pas connecté
+    }
+  };
+
   return (
     <div className='mb-10 px-8'>
-      <h2 className='font-bold text-xl'>{heading='Popular Doctors'}</h2>
+      <h2 className='font-bold text-xl'>{heading || 'Popular Doctors'}</h2>
       <div className='grid grid-cols-2 sm:grid-cols-2 gap-7 md:grid-cols-3 lg:grid-cols-4 mt-4'>
         {doctorList && doctorList.length > 0 ? doctorList.map((doctor, index) => (
           <div className='border-[1px] rounded-lg p-3 cursor-pointer hover:border-black hover:shadow-sm transition-all ease-in-out' key={index}>
@@ -23,10 +32,19 @@ function DoctorList({ doctorList,heading }) {
               <h2 className='text-gray-500 text-sm'>
                 {doctor.attributes?.Address}
               </h2>
-              <Link href={'/details/'+doctor.id} className='w-full'>
-              <h2 className='p-2 px-3 border-[1px] border-primary text-primary rounded-full w-full text-center text-[11px] mt-2 cursor-pointer hover:bg-primary hover:text-white'>
-                Reservez maintenant
-              </h2> </Link>
+              {isSignedIn ? (
+                <Link href={'/details/' + doctor.id} legacyBehavior>
+                  <a onClick={(e) => handleReserveClick(e)} className='p-2 px-3 border-[1px] border-primary text-primary rounded-full w-full text-center text-[11px] mt-2 cursor-pointer hover:bg-primary hover:text-white'>
+                    Reservez maintenant
+                  </a>
+                </Link>
+              ) : (
+                <SignInButton>
+                  <a className='p-2 px-3 border-[1px] border-primary text-primary rounded-full w-full text-center text-[11px] mt-2 cursor-pointer hover:bg-primary hover:text-white'>
+                    Reservez maintenant
+                  </a>
+                </SignInButton>
+              )}
             </div>
           </div>
         ))
